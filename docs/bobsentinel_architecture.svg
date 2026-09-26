@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" height="100%" style="background: #030712; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="ibmBlueGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f62fe" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#001d6c" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="emeraldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#064e3b" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#083344" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="amberGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#451a03" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="roseGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#4c0519" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#080c18"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Animated Flow Lines -->
+    <style>
+      .flow-line { stroke-dasharray: 6 6; animation: dash 1.6s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -24; } }
+      .badge-blink { animation: blink 1.2s ease-in-out infinite; }
+      @keyframes blink { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+      .node-text-title { font-size: 12.5px; font-weight: 700; fill: #ffffff; }
+      .node-text-sub { font-size: 9px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    </style>
+  </defs>
+
+  <!-- Background Grid -->
+  <g stroke="#1e293b" stroke-width="0.5" opacity="0.35">
+    <line x1="0" y1="100" x2="960" y2="100" />
+    <line x1="0" y1="200" x2="960" y2="200" />
+    <line x1="0" y1="300" x2="960" y2="300" />
+    <line x1="0" y1="400" x2="960" y2="400" />
+    <line x1="160" y1="0" x2="160" y2="520" />
+    <line x1="320" y1="0" x2="320" y2="520" />
+    <line x1="480" y1="0" x2="480" y2="520" />
+    <line x1="640" y1="0" x2="640" y2="520" />
+    <line x1="800" y1="0" x2="800" y2="520" />
+  </g>
+
+  <!-- Header Branding -->
+  <text x="40" y="40" fill="#ffffff" font-size="18" font-weight="800" letter-spacing="-0.5">🛡️ BobSentinel Architecture</text>
+  <text x="40" y="60" fill="#94a3b8" font-size="11.5">Autonomous Self-Healing Guard for Streaming Pipelines — Powered by IBM Bob &amp; Granite 3.3</text>
+
+  <!-- Top Badges -->
+  <g transform="translate(680, 24)">
+    <!-- IBM Bob Ready Badge -->
+    <rect x="0" y="0" width="125" height="26" rx="13" fill="#001d6c" stroke="#4589ff" stroke-width="1.2" />
+    <circle cx="14" cy="13" r="4" fill="#78a9ff" class="badge-blink" />
+    <text x="26" y="17" fill="#d0e2ff" font-size="10.5" font-weight="700">IBM Bob Ready</text>
+
+    <!-- Cache Speed Badge -->
+    <rect x="135" y="0" width="105" height="26" rx="13" fill="#022c22" stroke="#10b981" stroke-width="1.2" />
+    <circle cx="149" cy="13" r="4" fill="#34d399" class="badge-blink" />
+    <text x="160" y="17" fill="#a7f3d0" font-size="10.5" font-weight="700">&lt;0.04s Healing</text>
+  </g>
+
+  <!-- ==================== FLOW LINES ==================== -->
+  <!-- 1. Ingress to Entropy Guard -->
+  <path d="M 160 145 L 235 145" stroke="#10b981" stroke-width="2.5" class="flow-line" />
+
+  <!-- 2. Entropy Guard to Contract Validator -->
+  <path d="M 370 145 L 445 145" stroke="#06b6d4" stroke-width="2.5" class="flow-line" />
+
+  <!-- 3A. Clean Pass Line (Direct to Warehouse) -->
+  <path d="M 585 145 L 755 145" stroke="#10b981" stroke-width="2.5" class="flow-line" />
+  <text x="670" y="134" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">✓ Clean Pass</text>
+
+  <!-- 3B. Drift Intercepted Line (Down to Cache) -->
+  <path d="M 515 182 L 515 245" stroke="#f59e0b" stroke-width="2.5" class="flow-line" />
+  <text x="528" y="218" fill="#fbbf24" font-size="10" font-weight="700">Drift Detected</text>
+
+  <!-- 4A. Cache Hit (<0.01s) direct to AST Sandbox -->
+  <path d="M 590 282 Q 680 282 680 345 L 615 385" stroke="#06b6d4" stroke-width="2" class="flow-line" />
+  <text x="690" y="312" fill="#22d3ee" font-size="9.5" font-family="ui-monospace, monospace" font-weight="600">Cache HIT (&lt;0.01s)</text>
+
+  <!-- 4B. Cache Miss to IBM Bob -->
+  <path d="M 440 282 L 355 282" stroke="#f59e0b" stroke-width="2.5" class="flow-line" />
+  <text x="398" y="272" fill="#f59e0b" font-size="9" font-weight="700" text-anchor="middle">Cache MISS</text>
+
+  <!-- 5. IBM Bob to AST Sandbox -->
+  <path d="M 260 322 L 260 385 L 455 385" stroke="#4589ff" stroke-width="2.5" class="flow-line" />
+  <text x="345" y="377" fill="#78a9ff" font-size="9.5" font-weight="700" text-anchor="middle">Synthesized Patch</text>
+
+  <!-- 6A. AST Sandbox to Live Warehouse (Commit) -->
+  <path d="M 595 385 L 830 385 L 830 182" stroke="#10b981" stroke-width="2.5" class="flow-line" />
+  <text x="710" y="375" fill="#34d399" font-size="10" font-weight="700">Auto-Healed Commit</text>
+
+  <!-- 6B. AST Sandbox to DLQ (Alien / Malicious Quarantine) -->
+  <path d="M 525 422 L 525 455 L 755 455" stroke="#f43f5e" stroke-width="2.2" class="flow-line" />
+  <text x="635" y="448" fill="#f43f5e" font-size="9.5" font-weight="700">Irrecoverable / Alien</text>
+
+  <!-- ==================== ARCHITECTURE NODES ==================== -->
+
+  <!-- NODE 1: Stream Ingress -->
+  <g transform="translate(40, 108)">
+    <rect width="120" height="74" rx="12" fill="url(#cardBg)" stroke="#10b981" stroke-width="1.6" />
+    <text x="60" y="28" text-anchor="middle" class="node-text-title">Stream Ingress</text>
+    <text x="60" y="46" fill="#94a3b8" text-anchor="middle" class="node-text-sub">GitHub / Tavily</text>
+    <text x="60" y="60" fill="#34d399" text-anchor="middle" class="node-text-sub">Stream Partitions</text>
+  </g>
+
+  <!-- NODE 2: Entropy & Pre-Flight Guard -->
+  <g transform="translate(235, 108)">
+    <rect width="135" height="74" rx="12" fill="url(#cardBg)" stroke="#06b6d4" stroke-width="1.6" />
+    <text x="67" y="28" text-anchor="middle" class="node-text-title">Ingress Guard</text>
+    <text x="67" y="46" fill="#38bdf8" text-anchor="middle" class="node-text-sub">Shannon H(x) ≥ 1.80</text>
+    <text x="67" y="60" fill="#64748b" text-anchor="middle" class="node-text-sub">0.1ms Noise Filter</text>
+  </g>
+
+  <!-- NODE 3: Target Schema Contract Validator -->
+  <g transform="translate(445, 108)">
+    <rect width="140" height="74" rx="12" fill="url(#cardBg)" stroke="#3b82f6" stroke-width="1.6" />
+    <text x="70" y="28" text-anchor="middle" class="node-text-title">Contract Check</text>
+    <text x="70" y="46" fill="#93c5fd" text-anchor="middle" class="node-text-sub">tech_projects DDL</text>
+    <text x="70" y="60" fill="#64748b" text-anchor="middle" class="node-text-sub">Strict Types &amp; Range</text>
+  </g>
+
+  <!-- NODE 4: Fingerprint Signature Cache -->
+  <g transform="translate(440, 245)">
+    <rect width="150" height="74" rx="12" fill="#082f49" stroke="#06b6d4" stroke-width="2" />
+    <text x="75" y="28" text-anchor="middle" class="node-text-title">⚡ Signature Cache</text>
+    <text x="75" y="46" fill="#38bdf8" text-anchor="middle" class="node-text-sub">SHA-256 Shape Hash</text>
+    <text x="75" y="60" fill="#22d3ee" text-anchor="middle" class="node-text-sub" font-weight="700">&lt;0.01s Reusable Patch</text>
+  </g>
+
+  <!-- NODE 5: IBM BOB / GRANITE 3.3 ENGINE -->
+  <g transform="translate(170, 245)">
+    <rect width="185" height="77" rx="12" fill="url(#ibmBlueGlow)" stroke="#4589ff" stroke-width="2" filter="url(#glow)" opacity="0.95" />
+    <rect width="185" height="77" rx="12" fill="#071938" stroke="#4589ff" stroke-width="2" />
+    <text x="92" y="27" text-anchor="middle" class="node-text-title" fill="#ffffff">🤖 IBM Bob Engine</text>
+    <text x="92" y="46" fill="#a6c8ff" text-anchor="middle" class="node-text-sub" font-weight="700">Granite 3.3 8B Instruct</text>
+    <text x="92" y="61" fill="#78a9ff" text-anchor="middle" class="node-text-sub">Autonomous Code Synthesis</text>
+  </g>
+
+  <!-- NODE 6: AST Security Sandbox -->
+  <g transform="translate(455, 348)">
+    <rect width="140" height="74" rx="12" fill="url(#cardBg)" stroke="#10b981" stroke-width="2" />
+    <text x="70" y="28" text-anchor="middle" class="node-text-title">🔒 AST Sandbox</text>
+    <text x="70" y="46" fill="#34d399" text-anchor="middle" class="node-text-sub">Bytecode Inspection</text>
+    <text x="70" y="60" fill="#64748b" text-anchor="middle" class="node-text-sub">Blocks os/sys/eval</text>
+  </g>
+
+  <!-- TARGET 1: Live Relational Warehouse -->
+  <g transform="translate(755, 108)">
+    <rect width="155" height="74" rx="12" fill="#022c22" stroke="#10b981" stroke-width="2" />
+    <text x="77" y="28" text-anchor="middle" class="node-text-title">🗄️ tech_projects</text>
+    <text x="77" y="46" fill="#34d399" text-anchor="middle" class="node-text-sub">SQLite Warehouse</text>
+    <text x="77" y="60" fill="#a7f3d0" text-anchor="middle" class="node-text-sub" font-weight="700">100% Zero Data Loss</text>
+  </g>
+
+  <!-- TARGET 2: Dead Letter Queue (DLQ Quarantine) -->
+  <g transform="translate(755, 418)">
+    <rect width="155" height="72" rx="12" fill="#4c0519" stroke="#f43f5e" stroke-width="1.8" />
+    <text x="77" y="26" text-anchor="middle" class="node-text-title">⚠️ Dead Letter Queue</text>
+    <text x="77" y="44" fill="#fca5a5" text-anchor="middle" class="node-text-sub">Zero Warehouse Pollution</text>
+    <text x="77" y="58" fill="#fda4af" text-anchor="middle" class="node-text-sub">Forensic Audit Quarantine</text>
+  </g>
+</svg>
