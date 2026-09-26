@@ -181,9 +181,9 @@ BobSentinel includes high-impact features designed for production data teams and
 
 ```text
 SchemaSentinel-Strands/
-├── agent.py / sandbox.py / database.py / data_producer.py   # the engine (unchanged)
-├── pipeline_runner.py                                       # CLI pipeline (unchanged)
-├── services/pipeline_service.py                             # orchestration extracted from the old UI
+├── agent.py / sandbox.py / database.py / data_producer.py   # the engine 
+├── pipeline_runner.py                                       # CLI pipeline
+├── services/pipeline_service.py                             # orchestration 
 ├── api/                                                     # FastAPI layer (main, schemas)
 ├── frontend/                                                # Next.js 14 + TS + Tailwind + Motion + GSAP
 │   ├── app/          # layout, page, globals.css
