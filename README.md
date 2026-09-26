@@ -40,7 +40,7 @@ FastAPI Service Layer (api/)          ← thin, non-business layer
 Extracted Pipeline Service (services/)  ← orchestration extracted from the old UI
         │
         ▼
-Python Core (unchanged)               ← the engine
+Python Core               ← the engine
 ├── agent.py        IBM Bob / Granite patch synthesis and schema signatures
 ├── sandbox.py      AST security sandbox (banned modules/calls, isolated compile)
 ├── database.py     SQLite warehouse (tech_projects) + DLQ (tech_projects_dlq)
