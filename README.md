@@ -51,14 +51,14 @@ The backend business logic is the single source of truth — the frontend never 
 
 ---
 
-## 🤖 100% Live Engine — Not a Toy Project
+🤖 100% Live AI Engine
 
-**There are zero fake mocks, pre-cooked patches, or scripted workarounds.**
+No mocks. No pre-scripted fixes. No workarounds.
 
-- **Everything is 100% Live:** Whenever schema drift occurs, BobSentinel calls **IBM Bob / Granite 3.3** in real time.
-- **Real Python Synthesis:** IBM Bob dynamically inspects the breaking payload and writes a genuine Python transformation function on the fly.
-- **Zero Compromise on Safety:** The code is immediately tested in our AST Security Sandbox. If IBM Bob's patch fails validation or if the payload is alien noise, it is routed straight to the **Dead Letter Queue (DLQ)**. No bad data ever contaminates the warehouse.
-- **Production Truth:** A green "IBM Bob Ready" status means the live model is connected and active—every single fix you see is generated and verified live.
+Live inference: IBM Bob / Granite 3.3 analyzes every schema-drift event in real time.
+Dynamic synthesis: Generates the required Python transformation on demand.
+Sandbox validation: Every patch is AST-validated before execution; unsafe or invalid payloads are sent to the DLQ.
+Production-ready: “IBM Bob Ready” confirms the live model is connected, active, and generating verified fixes.
 
 ---
 
