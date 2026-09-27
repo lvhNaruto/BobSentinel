@@ -82,7 +82,7 @@ export function SandboxPanel({ ast, patch }: { ast: AstInfo; patch: PatchInfo | 
         <div className="rounded-xl border border-dashed border-violet-400/30 bg-violet-400/[0.04] p-6 text-center">
           <p className="font-display text-[13px] font-bold text-violet-300">No synthesized patch yet</p>
           <p className="mt-1 text-[11.5px] text-inkdim">
-            A drift event will request a transformation from IBM Bob / Granite.
+            A drift event will request a transformation from IBM Bob 2.0.
           </p>
         </div>
       )}

@@ -9,7 +9,7 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrai
 export const metadata: Metadata = {
   title: "BobSentinel | Autonomous Self-Healing Guard",
   description:
-    "Autonomous Self-Healing Guard for Streaming Pipelines — powered by IBM Bob with AST sandbox verification.",
+    "Autonomous Self-Healing Guard for Streaming Pipelines — powered by IBM Bob 2.0 with AST sandbox verification.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

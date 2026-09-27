@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useSentinel } from "@/hooks/useSentinel";
 import { api } from "@/lib/api";
 import { Header } from "@/components/Header";
@@ -18,7 +18,7 @@ import { StreamSource } from "@/components/StreamSource";
 import { TourModal } from "@/components/TourModal";
 import { Dialog } from "@/components/ui/dialog";
 import { soundFx } from "@/lib/soundFx";
-import type { AstInfo, BobStatus } from "@/types";
+import type { AstInfo, BobStatus, EngineStatus } from "@/types";
 
 const FALLBACK_AST: AstInfo = {
   state: "standby",
@@ -39,6 +39,7 @@ export default function Page() {
   const [schemaText, setSchemaText] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [bobStatus, setBobStatus] = useState<BobStatus | null>(null);
+  const [bobStatusSummary, setBobStatusSummary] = useState<EngineStatus | null>(null);
   const [tourOpen, setTourOpen] = useState(false);
   const [playgroundPayload, setPlaygroundPayload] = useState<string | null>(null);
 
@@ -47,9 +48,15 @@ export default function Page() {
     const refreshBobStatus = async () => {
       try {
         const status = await api.bobStatus();
-        if (active) setBobStatus(status);
+        if (active) {
+          setBobStatus(status);
+          setBobStatusSummary(status.bob || status);
+        }
       } catch {
-        if (active) setBobStatus(null);
+        if (active) {
+          setBobStatus(null);
+          setBobStatusSummary(null);
+        }
       }
     };
     void refreshBobStatus();
@@ -169,7 +176,7 @@ export default function Page() {
         running={running}
         runCount={state?.run_count ?? 0}
         dlqCount={metrics?.dlq_count ?? 0}
-        bobStatus={bobStatus}
+        bobStatus={bobStatusSummary}
         onRun={() => runPipeline(
           sourceMode === "preset"
             ? { mode: "preset", topics: selectedTopics }
@@ -198,10 +205,7 @@ export default function Page() {
 
         <PipelineFlow stage={state?.stage ?? null} dlqActive={state?.dlq_active ?? false} />
 
-        <RoiCalculator
-          metrics={metrics}
-          cacheCount={state?.cache?.signatures?.length ?? 0}
-        />
+        <RoiCalculator metrics={metrics} />
 
         <div className="grid gap-6 xl:grid-cols-[1.25fr_1fr]">
           <div className="space-y-6">
@@ -232,7 +236,7 @@ export default function Page() {
         </div>
 
         <footer className="border-t border-edge pt-4 text-center font-mono text-[10px] text-inkfaint">
-          BobSentinel — Autonomous Self-Healing Guard • IBM Bob / Granite 3.3 •
+          BobSentinel — Autonomous Self-Healing Guard • IBM Bob 2.0 •
           AST Security Sandbox • SQLite Warehouse + DLQ
         </footer>
       </main>

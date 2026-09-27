@@ -6,10 +6,8 @@ import type { Metrics } from "@/types";
 
 export function RoiCalculator({
   metrics,
-  cacheCount = 0,
 }: {
   metrics: Metrics | undefined;
-  cacheCount?: number;
 }) {
   const [hourlyRate, setHourlyRate] = useState<number>(85);
   const [showFormula, setShowFormula] = useState<boolean>(false);
@@ -25,7 +23,7 @@ export function RoiCalculator({
   // Token savings:
   // - Clean records bypass LLM entirely: ~850 prompt tokens saved
   // - Cached templates bypass LLM with sub-10ms execution: ~1,150 tokens saved per cache hit
-  const estimatedTokensSaved = (clean * 850) + (cacheCount * 1150);
+  const estimatedTokensSaved = (clean * 850) + ((metrics?.cache_hits ?? 0) * 1150);
 
   return (
     <section className="panel" aria-label="Economics and ROI Intelligence">

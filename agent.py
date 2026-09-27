@@ -24,27 +24,14 @@ class SchemaHealingAgent:
     transformation functions to adapt breaking payloads into target warehouse contracts.
     
     Architecture:
-    1. Primary Engine: IBM Bob / Watsonx (Granite 3.3 8B Instruct)
-    2. Resilient Fallback Engine: Nebius Studio SOTA LLM (Cloud)
-    3. Structural Skeleton Extraction: 90% prompt token reduction
-    4. Deterministic Hash Fingerprinting: Sub-10ms cache execution
-    5. Failure Defense: Direct routing to Dead Letter Queue (DLQ)
+    1. Sole Engine: IBM Bob / Granite 3.3 8B Instruct (IBM Bob 2.0)
+    2. Structural Skeleton Extraction: 90% prompt token reduction
+    3. Deterministic Hash Fingerprinting: Sub-10ms cache execution
+    4. Failure Defense: Direct routing to Dead Letter Queue (DLQ)
     """
 
     def __init__(self):
-        # 1. Nebius Studio LLM Configuration (Primary Cloud Engine)
-        self.nebius_api_key = os.getenv("NEBIUS_API_KEY", "")
-        self.nebius_base_url = "https://api.studio.nebius.ai/v1"
-        self.nebius_model = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B-Instruct-2507")
-
-        self.nebius_client = None
-        if self.nebius_api_key:
-            self.nebius_client = OpenAI(
-                base_url=self.nebius_base_url,
-                api_key=self.nebius_api_key
-            )
-
-        # 2. IBM Bob / Watsonx Configuration (Fallback Engine)
+        # IBM Bob / Watsonx Configuration (Sole Engine — IBM Bob 2.0)
         self.bob_api_key = os.getenv("BOB_API_KEY") or os.getenv("IBM_WATSONX_API_KEY", "")
         self.bob_model = (
             os.getenv("BOB_MODEL")
@@ -53,7 +40,7 @@ class SchemaHealingAgent:
         )
         self.bob_base_url = os.getenv("BOB_BASE_URL", "http://localhost:4000/v1")
         self.bob_client = (
-            OpenAI(api_key=self.bob_api_key, base_url=self.bob_base_url, timeout=45.0, max_retries=0)
+            OpenAI(api_key=self.bob_api_key, base_url=self.bob_base_url, timeout=45.0, max_retries=2)
             if self.bob_api_key
             else None
         )
@@ -77,61 +64,24 @@ class SchemaHealingAgent:
             "endpoint": self._endpoint_origin(),
             "message": "",
         }
-        if not self.bob_client and not self.nebius_client:
+        if not self.bob_client:
             status["message"] = "BOB_API_KEY is not configured."
-            return status
+            return {"bob": status}
 
-        if self.bob_client:
-            try:
-                models = self.bob_client.with_options(timeout=2.0, max_retries=0).models.list()
-                status["reachable"] = True
-                model_ids = {model.id for model in models.data}
-                if self.bob_model in model_ids:
-                    status["ready"] = True
-                    status["message"] = "IBM Bob endpoint and configured Granite model are available."
-                    return status
-            except Exception as exc:
-                logger.info("IBM Bob live endpoint probe: %s; engine active.", type(exc).__name__)
-
-        # When Bob is configured as primary with cloud execution active
-        if self.bob_api_key or self.nebius_client:
-            status["reachable"] = True
-            status["ready"] = True
-            status["message"] = "IBM Bob / Granite 3.3 Engine active and ready."
-            return status
-
-        return status
-
-    def check_nebius_status(self) -> Dict[str, Any]:
-        """Probe the configured Nebius endpoint without exposing credentials."""
-        status = {
-            "provider": "Nebius Studio",
-            "configured": bool(self.nebius_api_key),
-            "reachable": False,
-            "ready": False,
-            "model": self.nebius_model,
-            "endpoint": "https://api.studio.nebius.ai/v1",
-            "message": "",
-        }
-        if not self.nebius_client:
-            status["message"] = "NEBIUS_API_KEY is not configured."
-            return status
-
+        # Check IBM Bob / Granite (sole engine)
         try:
-            models = self.nebius_client.with_options(timeout=5.0, max_retries=0).models.list()
-        except Exception as exc:
-            logger.warning("Nebius readiness probe failed: %s", type(exc).__name__)
-            status["message"] = f"Nebius endpoint is unreachable ({type(exc).__name__}).."
-            return status
+            models = self.bob_client.with_options(timeout=5.0, max_retries=0).models.list()
+            status["reachable"] = True
+            model_ids = {model.id for model in models.data}
+            if self.bob_model in model_ids:
+                status["ready"] = True
+                status["message"] = "IBM Bob ready"
+            else:
+                status["message"] = f"Model {self.bob_model} not found in available models"
+        except Exception as e:
+            status["message"] = f"IBM Bob connection failed: {e}"
 
-        status["reachable"] = True
-        model_ids = {model.id for model in models.data}
-        if self.nebius_model not in model_ids:
-            status["message"] = "Nebius endpoint responds, but the configured model is not listed."
-            return status
-        status["ready"] = True
-        status["message"] = "Nebius endpoint and configured model are available."
-        return status
+        return {"bob": status}
 
     @staticmethod
     def compute_schema_signature(record: Dict[str, Any]) -> str:
@@ -273,16 +223,14 @@ Generate the complete transform_record function to handle this record according 
         error_trace: str
     ) -> str:
         """
-        Synthesizes code via Primary Engine (IBM Bob / Granite 3.3).
-        If IBM Bob encounters network/quota/auth issues, delegates to Resilient Cloud Fallback (Nebius Studio).
-        NO artificial token caps: Allows natural, unconstrained token generation to eliminate AST syntax errors.
+        Synthesizes code via the sole engine: IBM Bob / Granite 3.3 (IBM Bob 2.0).
+        If IBM Bob is unreachable, raises and the payload routes to DLQ (zero fake mocking).
         """
         system_prompt, user_content = self._build_prompt(failing_records, target_schema, error_trace)
 
-        # 1. Primary Attempt: IBM Bob / Granite
         if self.bob_client:
             try:
-                logger.info("Synthesizing patch via Primary Engine (IBM Bob - %s)...", self.bob_model)
+                logger.info("Synthesizing patch via IBM Bob / Granite 2.0 (%s)...", self.bob_model)
                 response = self.bob_client.chat.completions.create(
                     model=self.bob_model,
                     messages=[
@@ -290,33 +238,16 @@ Generate the complete transform_record function to handle this record according 
                         {"role": "user", "content": user_content},
                     ],
                     temperature=0.0,
+                    max_tokens=4096,
                 )
                 patch = response.choices[0].message.content or ""
                 if patch.strip():
                     return patch
             except Exception as bob_err:
-                logger.warning("Primary IBM Bob invocation failed: %s; delegating to resilient cloud engine.", bob_err)
+                logger.error("IBM Bob invocation failed: %s", bob_err)
 
-        # 2. Resilient Fallback Attempt: Nebius Studio SOTA LLM
-        if self.nebius_client:
-            try:
-                logger.info(f"Synthesizing patch via Resilient Fallback Engine (Nebius - {self.nebius_model})...")
-                response = self.nebius_client.chat.completions.create(
-                    model=self.nebius_model,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_content}
-                    ],
-                    temperature=0.1
-                )
-                patch = response.choices[0].message.content or ""
-                if patch.strip():
-                    return patch
-            except Exception as nebius_err:
-                logger.error(f"Fallback Nebius invocation failed: {nebius_err}")
-
-        # 3. If both LLMs are unreachable, route to Dead Letter Queue (Zero fake mocking)
-        raise RuntimeError("Agentic Synthesis Failure: Both IBM Bob and Nebius LLMs failed to respond. Payload routed to DLQ.")
+        # If the sole engine is unreachable, route to Dead Letter Queue (Zero fake mocking)
+        raise RuntimeError("Agentic Synthesis Failure: IBM Bob (Granite 3.3) LLM failed to respond. Payload routed to DLQ.")
 
     def extract_pure_code(self, raw_patch: str) -> str:
         """Extracts and verifies Python function definition from LLM markdown response."""

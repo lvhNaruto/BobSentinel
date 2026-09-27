@@ -35,12 +35,12 @@ const TOUR_STEPS: TourStep[] = [
       "Every record is evaluated against the warehouse contract before touching the LLM. Only records with legitimate drift invoke AI synthesis.",
     highlights: [
       "Tier 1 (Clean): Exact matches bypass LLM directly to warehouse (0 tokens, 0ms)",
-      "Tier 2 (Drift): Semantic fields present but shifted → triggers IBM Bob agentic healing",
+      "Tier 2 (Drift): Semantic fields present but shifted → triggers IBM Bob 2.0 agentic healing",
       "Tier 3 (Alien): Unrecoverable noise (IoT, login logs) routed to Dead Letter Queue",
     ],
   },
   {
-    title: "IBM Bob / Granite 3.3 Patch Synthesis",
+    title: "IBM Bob 2.0 Patch Synthesis",
     badge: "Stage 3",
     icon: <Sparkles size={20} className="text-violet-400" />,
     summary:

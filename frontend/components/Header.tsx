@@ -1,11 +1,9 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Shield, Play, RotateCcw, ScrollText, Loader2, FileDown, Volume2, VolumeX, Compass } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { soundFx } from "@/lib/soundFx";
-import type { BobStatus } from "@/types";
+import type { EngineStatus } from "@/types";
 
 export function Header({
   connected,
@@ -24,7 +22,7 @@ export function Header({
   running: boolean;
   runCount: number;
   dlqCount: number;
-  bobStatus: BobStatus | null;
+  bobStatus: EngineStatus | null;
   starting: boolean;
   onRun: () => void;
   onSchema: () => void;
@@ -66,7 +64,7 @@ export function Header({
               Bob<span className="text-emeraldx">Sentinel</span>
             </h1>
             <p className="text-[11.5px] text-inkdim">
-              Autonomous Self-Healing Guard • IBM Bob & AST Sandbox
+              Autonomous Self-Healing Guard • IBM Bob 2.0 & AST Sandbox
             </p>
           </div>
         </div>
@@ -77,16 +75,16 @@ export function Header({
         </Badge>
         <Badge
           tone={bobStatus === null ? "neutral" : bobStatus.ready ? "emerald" : bobStatus.configured ? "amber" : "rose"}
-          title={bobStatus?.message ?? "Checking IBM Bob endpoint"}
+          title="IBM Bob 2.0 engine status"
         >
           <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
           {bobStatus === null
-            ? "Checking IBM Bob"
+            ? "Checking IBM Bob 2.0"
             : bobStatus.ready
-            ? "IBM Bob Ready"
+            ? "IBM Bob 2.0 Ready"
             : bobStatus.configured
-            ? "IBM Bob Unavailable"
-            : "IBM Bob Not Configured"}
+            ? "IBM Bob 2.0 Unavailable"
+            : "IBM Bob 2.0 Not Configured"}
         </Badge>
         <span className="chip">RUNS: {runCount}</span>
         <span className="chip">DLQ: {dlqCount}</span>

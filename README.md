@@ -80,43 +80,60 @@ Drift shapes are fingerprinted with SHA-256 of the sorted key set. The first tim
 
 ## 🚀 Quickstart
 
+### 1. Clone the Repository
+
 ```bash
-# 1. Install backend dependencies
+git clone https://github.com/lvhNaruto/BobSentinel.git
+cd BobSentinel
+```
+
+### 2. Backend Setup (FastAPI & Agent)
+
+```bash
+# Create and activate a virtual environment (recommended)
+python -m venv venv
+# On Windows:
+.\venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Copy environment template
+cp .env.example .env
 ```
 
-### Environment Configuration (.env)
+Configure your `.env` with your IBM Bob credentials:
 
-```text
-BOB_API_KEY=...
+```ini
+BOB_API_KEY=your_bob_api_key_here
 BOB_MODEL=ibm-granite/granite-3.3-8b-instruct
-# Optional: defaults to the local IBM Bob-compatible endpoint
-BOB_BASE_URL=http://localhost:4000/v1
-# IBM_WATSONX_API_KEY and IBM_WATSONX_MODEL are used if the BOB_* equivalents are unset.
-IBM_WATSONX_API_KEY=...
-IBM_WATSONX_MODEL=...
-TAVILY_API_KEY=...
-# Optional: raises GitHub unauthenticated rate-limit ceiling
-GITHUB_TOKEN=ghp_xxx
+BOB_BASE_URL=https://api.bob.ibm.com/v1
+
+# Optional: Tavily key for live web grounding
+TAVILY_API_KEY=your_tavily_api_key_here
 ```
 
-### Start the API Backend
+Start the FastAPI backend:
 
 ```bash
 uvicorn api.main:app --reload --port 8000
 ```
 
-### Start the Frontend
+### 3. Frontend Setup (Next.js)
 
 Open a separate terminal:
 
 ```bash
 cd frontend
 npm install
-npm run dev        # http://localhost:3000
+npm run dev
 ```
 
-### CLI Pipeline
+The frontend dashboard will be running at `http://localhost:3000`.
+
+### 4. CLI Pipeline Runner (Optional)
 
 CLI pipeline still works exactly as before:
 

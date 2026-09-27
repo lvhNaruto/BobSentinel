@@ -292,7 +292,7 @@ export function Playground({
         <Button onClick={runTest} disabled={busy || !payloadValid} variant="primary" className="w-full sm:w-auto">
           {busy ? (
             <>
-              <Loader2 size={14} className="animate-spin" /> IBM Bob / Granite evaluating…
+              <Loader2 size={14} className="animate-spin" /> IBM Bob 2.0 evaluating…
             </>
           ) : (
             <>
@@ -325,8 +325,8 @@ export function Playground({
               fail={quarantined}
               label={
                 quarantined
-                  ? "Stage 2: IBM Bob / Granite Triage — Non-repairable / Alien schema classified"
-                  : "Stage 2: IBM Bob / Granite AST Patch Synthesized"
+                  ? "Stage 2: IBM Bob 2.0 Triage — Non-repairable / Alien schema classified"
+                  : "Stage 2: IBM Bob 2.0 AST Patch Synthesized"
               }
             />
             <Step

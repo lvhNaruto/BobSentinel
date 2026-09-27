@@ -66,7 +66,7 @@ export function MetricsBar({ metrics }: { metrics: Metrics | undefined }) {
         icon={<Zap size={13} />}
         label="Synthesis Latency"
         value={m?.last_latency_ms != null ? formatLatency(m.last_latency_ms) : "—"}
-        sub="IBM Bob / Granite"
+        sub="IBM Bob 2.0"
         accent="text-amberx"
       />
       <MetricCard

@@ -10,9 +10,10 @@ export interface Metrics {
   dropped: number;
   last_latency_ms: number | null;
   sandbox_compiles: number;
+  cache_hits: number;
 }
 
-export interface BobStatus {
+export interface EngineStatus {
   provider: string;
   configured: boolean;
   reachable: boolean;
@@ -20,6 +21,11 @@ export interface BobStatus {
   model: string;
   endpoint: string;
   message: string;
+}
+
+export interface BobStatus {
+  bob: EngineStatus;
+  [key: string]: any;
 }
 
 export interface WarehouseRecord {

@@ -19,7 +19,7 @@ const STAGES: StageDef[] = [
   { key: "ingress", label: "Stream Ingress", hint: "partitions", color: "#22d3ee", ring: "border-cyan-400 text-cyan-300", icon: <Radar size={15} /> },
   { key: "fingerprint", label: "Fingerprint", hint: "SHA-256 signature", color: "#22d3ee", ring: "border-cyan-400 text-cyan-300", icon: <Fingerprint size={15} /> },
   { key: "drift", label: "Drift Detector", hint: "contract validation", color: "#fbbf24", ring: "border-amber-400 text-amber-300", icon: <GitBranch size={15} /> },
-  { key: "agent", label: "IBM Bob / Granite", hint: "live model endpoint", color: "#a78bfa", ring: "border-violet-400 text-violet-300", icon: <BrainCircuit size={15} /> },
+  { key: "agent", label: "IBM Bob 2.0", hint: "live model endpoint", color: "#a78bfa", ring: "border-violet-400 text-violet-300", icon: <BrainCircuit size={15} /> },
   { key: "ast", label: "AST Sandbox", hint: "security verification", color: "#a78bfa", ring: "border-violet-400 text-violet-300", icon: <ShieldCheck size={15} /> },
   { key: "warehouse", label: "Warehouse", hint: "tech_projects", color: "#34d399", ring: "border-emerald-400 text-emerald-300", icon: <Database size={15} /> },
 ];
